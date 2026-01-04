@@ -1,0 +1,63 @@
+# ------------------------
+# Python
+# ------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.egg-info/
+*.egg
+*.env
+*.venv
+*.pytest_cache/
+*.mypy_cache/
+
+# ------------------------
+# PyTorch / PyG
+# ------------------------
+*.pt
+*.pth
+*.ckpt
+*.log
+
+# ------------------------
+# Jupyter / Notebooks
+# ------------------------
+.ipynb_checkpoints/
+
+# ------------------------
+# Data / outputs
+# ------------------------
+/submissions/*
+!/submissions/.gitkeep       # Keep folder
+/data/*.pkl                   # Optional: If you want to ignore large pickle files locally
+/data/test_labels.csv         # Optional: ignore hidden labels
+/data/*.csv                   # Optional: ignore local datasets if regenerated
+/results/
+/outputs/
+
+# ------------------------
+# VSCode / IDE
+# ------------------------
+.vscode/
+.idea/
+*.code-workspace
+
+# ------------------------
+# System files
+# ------------------------
+.DS_Store
+Thumbs.db
+*.lock
+uv.lock
+
+# ------------------------
+# Kaggle / local environment
+# ------------------------
+/__pycache__/
+/.kaggle/
+
+
+check_data.py
+generate_data.py

@@ -1,0 +1,60 @@
+name: Score Submission
+
+# Trigger on pull requests or pushes to the submissions folder
+on:
+  pull_request:
+    paths:
+      - 'submissions/*.csv'
+  push:
+    paths:
+      - 'submissions/*.csv'
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    env:
+      PR_USER: ${{ github.actor }}
+      PR_SUBMISSION: ''  # will be set dynamically
+      PR_SCORE: 0        # will be set dynamically
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Find Submission File
+        id: find_submission
+        run: |
+          # Assumes only one CSV in submissions/ per PR
+          SUB=$(ls submissions/*.csv | head -n 1)
+          echo "submission_file=$SUB" >> $GITHUB_OUTPUT
+
+      - name: Score Submission
+        id: scoring
+        run: |
+          python scoring/scoring_script.py ${{ steps.find_submission.outputs.submission_file }} > score.txt
+          SCORE=$(grep -oP "\d+\.\d+" score.txt)
+          echo "PR_SCORE=$SCORE" >> $GITHUB_ENV
+          echo "PR_SUBMISSION=${{ steps.find_submission.outputs.submission_file }}" >> $GITHUB_ENV
+
+      - name: Update Leaderboard
+        run: |
+          python scoring/update_leaderboard.py
+
+      - name: Commit & Push Updated Leaderboard
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update leaderboard via GitHub Actions"
+          branch: main
+          file_pattern: leaderboard.md, leaderboard.csv
+          commit_user_name: "GNN Challenge Bot"
+          commit_user_email: "bot@example.com"
