@@ -14,18 +14,8 @@ python-dotenv>=1.2,<2
 tqdm>=4.66,<5
 joblib>=1.5,<2
 
-# NLP
-spacy>=3.8,<4
-
-# Computer Vision
-opencv-python>=4.12,<4.13
-Pillow>=11.3,<12
-
 # Deep Learning
 torch>=2.1,<3
-torchvision>=0.16,<0.17
-torchaudio>=2.1,<3
-tensorflow>=2.14,<3   # optional
 
 # Web / APIs
 flask>=3.1,<4
