@@ -17,6 +17,7 @@ The goal is to classify molecular graphs to predict anti-HIV activity using **GC
 
 ---
 ## 📁 Repository Structure
+```
 
 ├── 📁 .github
 │   └── 📁 workflows
@@ -39,3 +40,5 @@ The goal is to classify molecular graphs to predict anti-HIV activity using **GC
 ├── 📝 README.md
 ├── ⚙️ pyproject.toml
 └── 📄 requirements.txt
+
+```
