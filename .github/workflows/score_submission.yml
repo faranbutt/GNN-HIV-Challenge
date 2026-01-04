@@ -1,6 +1,5 @@
 name: Score Submission
 
-# Trigger on pull requests or pushes to the submissions folder
 on:
   pull_request:
     paths:
@@ -12,10 +11,6 @@ on:
 jobs:
   score:
     runs-on: ubuntu-latest
-    env:
-      PR_USER: ${{ github.actor }}
-      PR_SUBMISSION: ''  # will be set dynamically
-      PR_SCORE: 0        # will be set dynamically
 
     steps:
       - name: Checkout Repository
@@ -49,12 +44,18 @@ jobs:
       - name: Update Leaderboard
         run: |
           python scoring/update_leaderboard.py
+        env:
+          PR_USER: ${{ github.actor }}
+          PR_SUBMISSION: ${{ steps.find_submission.outputs.submission_file }}
+          PR_SCORE: ${{ env.PR_SCORE }}
 
       - name: Commit & Push Updated Leaderboard
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update leaderboard via GitHub Actions"
           branch: main
-          file_pattern: leaderboard.md leaderboard.csv
+          file_pattern: "leaderboard.md leaderboard.csv"
           commit_user_name: "GNN Challenge Bot"
           commit_user_email: "bot@example.com"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
