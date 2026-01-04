@@ -242,7 +242,6 @@ google-cloud-trace==1.17.0
 google-cloud-translate==3.12.1
 google-cloud-videointelligence==2.17.0
 google-cloud-vision==3.11.0
-google-colab @ file:///colabtools/dist/google_colab-1.0.0.tar.gz
 google-crc32c==1.7.1
 google-genai==1.48.0
 google-generativeai==0.8.5
