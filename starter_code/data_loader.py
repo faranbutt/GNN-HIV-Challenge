@@ -19,21 +19,13 @@ class HIVPyGDataset(Dataset):
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
         gid = row['graph_id']
-        
-        # Node features FIRST
         x = torch.from_numpy(self.feats[gid]).float()
-        
-        # Edges (make undirected)
         edges = self.structs[gid]['edge_list']
         edges = edges + [(j, i) for (i, j) in edges]
         edge_index = torch.tensor(edges, dtype=torch.long).t().contiguous()
-        
-        # Add self-loops
         edge_index, _ = add_self_loops(edge_index, num_nodes=x.size(0))
-        
         if self.is_test:
             return Data(x=x, edge_index=edge_index, graph_id=gid)
-        
         y = torch.tensor([row['target']], dtype=torch.long)
         return Data(x=x, edge_index=edge_index, y=y)
 
