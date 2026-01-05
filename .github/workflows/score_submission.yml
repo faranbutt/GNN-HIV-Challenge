@@ -57,6 +57,6 @@ jobs:
         with:
           commit_message: "Update leaderboard via GitHub Actions"
           branch: main
-          file_pattern: "leaderboard.md leaderboard.csv"
+          file_pattern: "leaderboard.md leaderboard.csv README.md"
           commit_user_name: "GNN Challenge Bot"
           commit_user_email: "bot@example.com"
