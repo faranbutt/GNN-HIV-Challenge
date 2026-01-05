@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
@@ -26,6 +27,7 @@ jobs:
         with:
           python-version: '3.10'
 
+    
       - name: Install Dependencies
         run: |
           pip install --upgrade pip
@@ -35,24 +37,31 @@ jobs:
         id: find_submission
         run: |
           SUB=$(ls submissions/*.csv | head -n 1)
+
           if [ -z "$SUB" ]; then
             echo "No submission CSV found in submissions/"
             exit 1
           fi
+
           echo "submission_file=$SUB" >> $GITHUB_OUTPUT
           echo "PR_SUBMISSION=$SUB" >> $GITHUB_ENV
 
+     
       - name: Score Submission
         run: |
           python scoring/scoring_script.py "${{ steps.find_submission.outputs.submission_file }}" > score.txt
+
           SCORE=$(grep -oP "\d+\.\d+" score.txt | head -n 1)
+
           if [ -z "$SCORE" ]; then
-            echo "Failed to extract score"
+            echo "Failed to extract ROC-AUC"
             cat score.txt
             exit 1
           fi
+
           echo "PR_SCORE=$SCORE" >> $GITHUB_ENV
           echo "ROC-AUC = $SCORE"
+
       - name: Update Leaderboard
         run: |
           python scoring/update_leaderboard.py
@@ -60,6 +69,8 @@ jobs:
           PR_USER: ${{ github.actor }}
           PR_SUBMISSION: ${{ env.PR_SUBMISSION }}
           PR_SCORE: ${{ env.PR_SCORE }}
+
+
       - name: Inject leaderboard into README
         run: |
           awk '
@@ -78,6 +89,7 @@ jobs:
           !inside {print}
           ' README.md > README.tmp && mv README.tmp README.md
 
+   
       - name: Commit & Push Updated Leaderboard
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
@@ -89,5 +101,3 @@ jobs:
             README.md
           commit_user_name: "GNN Challenge Bot"
           commit_user_email: "bot@example.com"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
