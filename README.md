@@ -42,3 +42,9 @@ The goal is to classify molecular graphs to predict anti-HIV activity using **GC
 └── 📄 requirements.txt
 
 ```
+
+## 🏆 Leaderboard
+
+<!-- BEGIN LEADERBOARD -->
+{% include_relative leaderboard.md %}
+<!-- END LEADERBOARD -->
