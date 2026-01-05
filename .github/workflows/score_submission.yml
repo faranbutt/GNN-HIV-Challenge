@@ -52,11 +52,20 @@ jobs:
           PR_SUBMISSION: ${{ env.PR_SUBMISSION }}
           PR_SCORE: ${{ env.PR_SCORE }}
 
+      - name: Inject leaderboard into README
+        run: |
+          awk '
+          BEGIN {p=1}
+          /<!-- LEADERBOARD-START -->/ {print; system("cat leaderboard.md"); p=0}
+          /<!-- LEADERBOARD-END -->/ {p=1}
+          p {print}
+          ' README.md > README.tmp && mv README.tmp README.md
+
       - name: Commit & Push Updated Leaderboard
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update leaderboard via GitHub Actions"
           branch: main
-          file_pattern: "leaderboard.md leaderboard.csv"
+          file_pattern: "leaderboard.md leaderboard.csv README.md"
           commit_user_name: "GNN Challenge Bot"
           commit_user_email: "bot@example.com"
