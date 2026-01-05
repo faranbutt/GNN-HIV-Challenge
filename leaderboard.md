@@ -1,3 +1,5 @@
 # GNN HIV Challenge Leaderboard
 
-> Leaderboard is automatically updated by GitHub Actions when a new submission is scored.
+| Rank | User | Submission File | ROC-AUC | Date |
+|------|------|----------------|---------|------|
+| 1 | faranbutt | submissions/test.csv | 0.4747 | 2026-01-05 |
