@@ -1,5 +1,8 @@
 name: Score Submission
 
+permissions:
+  contents: write 
+
 on:
   pull_request:
     paths:
@@ -15,6 +18,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -29,12 +34,10 @@ jobs:
       - name: Find Submission File
         id: find_submission
         run: |
-          # Assumes only one CSV in submissions/ per PR
           SUB=$(ls submissions/*.csv | head -n 1)
           echo "submission_file=$SUB" >> $GITHUB_OUTPUT
 
       - name: Score Submission
-        id: scoring
         run: |
           python scoring/scoring_script.py ${{ steps.find_submission.outputs.submission_file }} > score.txt
           SCORE=$(grep -oP "\d+\.\d+" score.txt)
@@ -46,7 +49,7 @@ jobs:
           python scoring/update_leaderboard.py
         env:
           PR_USER: ${{ github.actor }}
-          PR_SUBMISSION: ${{ steps.find_submission.outputs.submission_file }}
+          PR_SUBMISSION: ${{ env.PR_SUBMISSION }}
           PR_SCORE: ${{ env.PR_SCORE }}
 
       - name: Commit & Push Updated Leaderboard
@@ -57,5 +60,3 @@ jobs:
           file_pattern: "leaderboard.md leaderboard.csv"
           commit_user_name: "GNN Challenge Bot"
           commit_user_email: "bot@example.com"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
