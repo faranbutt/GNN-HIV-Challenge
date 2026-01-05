@@ -31,8 +31,12 @@ leaderboard['Rank'] = leaderboard.index + 1
 leaderboard.to_csv(leaderboard_csv, index=False)
 
 with open(leaderboard_md, 'w') as f:
-    f.write('# GNN HIV Challenge Leaderboard\n\n')
+    f.write('## 🏆 Leaderboard\n\n')
     f.write('| Rank | User | Submission File | ROC-AUC | Date |\n')
     f.write('|------|------|----------------|---------|------|\n')
     for _, row in leaderboard.iterrows():
-        f.write(f"| {row['Rank']} | {row['User']} | {row['Submission File']} | {row['ROC-AUC']:.4f} | {row['Date']} |\n")
+        f.write(
+            f"| {row['Rank']} | {row['User']} | "
+            f"{row['Submission File']} | "
+            f"{row['ROC-AUC']:.4f} | {row['Date']} |\n"
+        )
