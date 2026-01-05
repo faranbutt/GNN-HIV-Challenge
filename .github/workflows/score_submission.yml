@@ -1,7 +1,7 @@
 name: Score Submission
 
 permissions:
-  contents: write   # 🔴 THIS FIXES THE 403
+  contents: write   
 
 on:
   pull_request:
