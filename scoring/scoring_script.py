@@ -3,7 +3,12 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 import sys
 
+
+if len(sys.argv) < 2:
+    raise ValueError("Usage: python scoring_script.py <submission.csv>")
+
 submission_file = sys.argv[1]
+
 submission = pd.read_csv(submission_file)
 truth = pd.read_csv('data/test_labels.csv')
 
