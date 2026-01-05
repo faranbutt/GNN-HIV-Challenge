@@ -36,6 +36,7 @@ The goal is to classify molecular graphs to predict anti-HIV activity using **GC
 │   ├── 🐍 data_loader.py
 │   ├── 🐍 gnn_models.py
 │   └── 🐍 train.py
+├── 📁 submissions
 ├── ⚙️ .gitignore
 ├── 📝 README.md
 ├── ⚙️ pyproject.toml
